@@ -18,7 +18,7 @@ export function TwoFactorPlaceholder() {
         editable={false}
       />
       <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-        Integrate Supabase MFA or custom backend for production.
+        İstehsalda 2FA üçün backend inteqrasiyası əlavə edin.
       </Text>
     </View>
   );
