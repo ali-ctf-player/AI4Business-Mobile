@@ -26,7 +26,7 @@ const translations: Record<Language, Record<string, string>> = {
     "chat.title": "Chat",
     "chat.placeholder": "Sual verin...",
     "chat.send": "Göndər",
-    "chat.greeting": "Salam! Mən innovasiya ekosistem köməkçisiyəm. Startaplar üçün proqramlar və investorlar üçün startaplar tapmağa kömək edə bilərəm.",
+    "chat.greeting": "Salam! Mən SES innovasiya ekosistem köməkçisiyəm. Hackathonlar, iştirakçılar, investorlar və tərəfdaşlıq imkanları haqqında sual-cavab verə biləm.",
     // Map
     "map.title": "Xəritə",
     "map.ecosystem": "Ekosistem Xəritəsi",
@@ -34,7 +34,7 @@ const translations: Record<Language, Record<string, string>> = {
     "map.itHubs": "IT Mərkəzləri",
     // Profile Selection
     "profile.select": "Profil növünü seç",
-    "profile.startup": "Startap",
+    "profile.startup": "İştirakçı",
     "profile.investor": "İnvestor",
     "profile.itCompany": "İT Şirkət",
     "profile.incubator": "İnkubator/Təşkilatçı",
@@ -58,7 +58,7 @@ const translations: Record<Language, Record<string, string>> = {
     "chat.title": "Chat",
     "chat.placeholder": "Ask a question...",
     "chat.send": "Send",
-    "chat.greeting": "Hi! I'm your innovation ecosystem assistant. I can help startups find programs and help investors discover startups.",
+    "chat.greeting": "Hi! I'm the SES innovation ecosystem assistant. I can help you with questions about hackathons, participants, investors, and partnership opportunities.",
     // Map
     "map.title": "Map",
     "map.ecosystem": "Ecosystem Map",
@@ -66,7 +66,7 @@ const translations: Record<Language, Record<string, string>> = {
     "map.itHubs": "IT Hubs",
     // Profile Selection
     "profile.select": "Select Profile Type",
-    "profile.startup": "Startup",
+    "profile.startup": "Participant",
     "profile.investor": "Investor",
     "profile.itCompany": "IT Company",
     "profile.incubator": "Incubator/Organizer",

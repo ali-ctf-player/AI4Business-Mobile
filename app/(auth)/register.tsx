@@ -19,7 +19,7 @@ import type { RoleSlug } from "@/types/database.types";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const ROLE_NAMES: Record<RoleSlug, { az: string; en: string }> = {
-  startup: { az: "Startap", en: "Startup" },
+  startup: { az: "İştirakçı", en: "Participant" },
   investor: { az: "İnvestor", en: "Investor" },
   it_company: { az: "İT Şirkət", en: "IT Company" },
   organizer: { az: "Təşkilatçı", en: "Organizer" },

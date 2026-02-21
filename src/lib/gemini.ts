@@ -66,7 +66,7 @@ export async function chatWithGemini(
         temperature: 0.7,
         topK: 40,
         topP: 0.95,
-        maxOutputTokens: 500,
+        maxOutputTokens: 2000,
       },
     };
 
@@ -85,11 +85,18 @@ export async function chatWithGemini(
       try {
         const response = await axios.post(url, requestBody, {
           headers: { "Content-Type": "application/json" },
-          timeout: 30000,
+          timeout: 45000,
         });
         const data = response.data;
-        const content =
-          data?.candidates?.[0]?.content?.parts?.[0]?.text || "Cavab alına bilmədi.";
+        const candidate = data?.candidates?.[0];
+        const content = candidate?.content?.parts?.[0]?.text || "Cavab alına bilmədi.";
+        
+        // Finish reason yoxla - MAX_TOKENS ya da timeout olmuşsa xəbərdir
+        const finishReason = candidate?.finishReason;
+        if (finishReason === "MAX_TOKENS") {
+          console.warn("[Gemini] Cavab maksimum token sayına çatdı, kəsilmiş ola bilər");
+        }
+        
         return { content };
       } catch (err) {
         const axiosErr = err as AxiosError<{ error?: { message?: string } }>;

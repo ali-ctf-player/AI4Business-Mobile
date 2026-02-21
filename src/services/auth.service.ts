@@ -1,7 +1,7 @@
 /**
  * Auth service – SQLite (Supabase əvəzinə local).
- * Admin: admin@ses.az / admin123
- * Super Admin: superadmin@ses.az / super123
+ * Admin: admin@gmail.com / admin123
+ * Super Admin: superadmin@gmail.com / super123
  */
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getDb, genId } from "@/lib/db";

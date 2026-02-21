@@ -132,10 +132,10 @@ async function initSchema(): Promise<void> {
 async function seedDemoAccountsIfMissing(): Promise<void> {
   const hash = (p: string) => p;
   const demos: Array<{ email: string; password: string; fullName: string; roleSlug: string }> = [
-    { email: "startup@ses.az", password: "startup123", fullName: "Startap İştirakçısı", roleSlug: "startup" },
-    { email: "investor@ses.az", password: "investor123", fullName: "İnvestor", roleSlug: "investor" },
-    { email: "itcompany@ses.az", password: "itcompany123", fullName: "İT Şirkət", roleSlug: "it_company" },
-    { email: "organizer@ses.az", password: "organizer123", fullName: "Təşkilatçı", roleSlug: "organizer" },
+    { email: "startup@gmail.com", password: "startup123", fullName: "İştirakçı Nümunəsi", roleSlug: "startup" },
+    { email: "investor@gmail.com", password: "investor123", fullName: "İnvestor", roleSlug: "investor" },
+    { email: "itcompany@gmail.com", password: "itcompany123", fullName: "İT Şirkət", roleSlug: "it_company" },
+    { email: "organizer@gmail.com", password: "organizer123", fullName: "Təşkilatçı", roleSlug: "organizer" },
   ];
   for (const d of demos) {
     const existing = await db!.getAllAsync<{ id: string }>("SELECT id FROM profiles WHERE email = ?", d.email);
@@ -178,7 +178,7 @@ async function seedIfEmpty(): Promise<void> {
 
   // Roles: startup, investor, it_company, organizer, admin, super_admin
   const roleRows = [
-    ["startup", "Startap"],
+    ["startup", "İştirakçı"],
     ["investor", "İnvestor"],
     ["it_company", "İT Şirkət"],
     ["organizer", "Təşkilatçı"],
@@ -200,28 +200,28 @@ async function seedIfEmpty(): Promise<void> {
   const adminSuper = genId();
   await db!.runAsync(
     "INSERT INTO profiles (id, role_id, email, password_hash, full_name) VALUES (?, ?, ?, ?, ?)",
-    adminAdmin, ridAdmin, "admin@ses.az", hash("admin123"), "Admin"
+    adminAdmin, ridAdmin, "admin@gmail.com", hash("admin123"), "Admin"
   );
   await db!.runAsync(
     "INSERT INTO profiles (id, role_id, email, password_hash, full_name) VALUES (?, ?, ?, ?, ?)",
-    adminSuper, ridSuper, "superadmin@ses.az", hash("super123"), "Super Admin"
+    adminSuper, ridSuper, "superadmin@gmail.com", hash("super123"), "Super Admin"
   );
-  // Startap iştirakçısı, İnvestor, İT Şirkət, Təşkilatçı – fərqli mail və parol
+  // İştirakçı, İnvestor, İT Şirkət, Təşkilatçı – fərqli mail və parol
   await db!.runAsync(
     "INSERT INTO profiles (id, role_id, email, password_hash, full_name) VALUES (?, ?, ?, ?, ?)",
-    genId(), ridStartup, "startup@ses.az", hash("startup123"), "Startap İştirakçısı"
-  );
-  await db!.runAsync(
-    "INSERT INTO profiles (id, role_id, email, password_hash, full_name) VALUES (?, ?, ?, ?, ?)",
-    genId(), ridInvestor, "investor@ses.az", hash("investor123"), "İnvestor"
+    genId(), ridStartup, "startup@gmail.com", hash("startup123"), "İştirakçı Nümunəsi"
   );
   await db!.runAsync(
     "INSERT INTO profiles (id, role_id, email, password_hash, full_name) VALUES (?, ?, ?, ?, ?)",
-    genId(), ridIt, "itcompany@ses.az", hash("itcompany123"), "İT Şirkət"
+    genId(), ridInvestor, "investor@gmail.com", hash("investor123"), "İnvestor"
   );
   await db!.runAsync(
     "INSERT INTO profiles (id, role_id, email, password_hash, full_name) VALUES (?, ?, ?, ?, ?)",
-    genId(), ridOrg, "organizer@ses.az", hash("organizer123"), "Təşkilatçı"
+    genId(), ridIt, "itcompany@gmail.com", hash("itcompany123"), "İT Şirkət"
+  );
+  await db!.runAsync(
+    "INSERT INTO profiles (id, role_id, email, password_hash, full_name) VALUES (?, ?, ?, ?, ?)",
+    genId(), ridOrg, "organizer@gmail.com", hash("organizer123"), "Təşkilatçı"
   );
 
   const participantIds: string[] = [];

@@ -26,8 +26,8 @@ type ProfileType = {
 const PROFILES: ProfileType[] = [
   {
     slug: "startup",
-    labelAz: "Startap",
-    labelEn: "Startup",
+    labelAz: "İştirakçı",
+    labelEn: "Participant",
     descriptionAz: "Yeni ideyalarınızı həyata keçirin",
     descriptionEn: "Bring your new ideas to life",
     color: "#2196F3",

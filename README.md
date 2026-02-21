@@ -4,11 +4,11 @@ React Native (Expo) mobile app for a government hackathon. Unites the innovation
 
 ## Tech stack
 
-- **React Native** + **Expo** (SDK 51)
+- **React Native** + **Expo** (SDK 54)
 - **Expo Router** (file-based routing)
 - **NativeWind** (Tailwind for RN)
-- **Supabase** (Auth + Database, RBAC via RLS)
-- **OpenAI API** (Chatbot – use backend proxy in production)
+- **SQLite** (Local database for data persistence)
+- **Google Gemini API** (AI Chatbot)
 - **react-native-maps** (Ecosystem map)
 
 ## Setup
@@ -18,15 +18,19 @@ React Native (Expo) mobile app for a government hackathon. Unites the innovation
    npm install
    ```
 
-2. **Environment**
-   - Copy `.env.example` to `.env`
-   - Set `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` (create a project at [supabase.com](https://supabase.com))
-   - Run the SQL in `supabase/migrations/001_initial_schema.sql` in the Supabase SQL Editor
+2. **Environment Configuration**
+   Create a `.env` file in the project root:
+   ```bash
+   EXPO_PUBLIC_GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
+   ```
+   - Get your Gemini API key from [Google AI Studio](https://aistudio.google.com/)
+   - Click "Get API key" → "Create API key in new project"
+   - Copy the key and paste it in `.env`
 
-3. **Assets**
+3. **Assets** (Optional)
    - Add `assets/icon.png`, `assets/splash-icon.png`, `assets/adaptive-icon.png` (or remove references from `app.json`)
 
-4. **Start**
+4. **Start the app**
    ```bash
    npx expo start
    ```
@@ -75,8 +79,9 @@ The app has 5 main tabs:
    - Tap a startup to view full profile
 
 3. **Chat** – AI Assistant
-   - Chatbot for ecosystem questions
-   - Trained as a national innovation ecosystem assistant
+   - Chatbot powered by Google Gemini
+   - Answers ecosystem-related questions
+   - Requires EXPO_PUBLIC_GEMINI_API_KEY in `.env`
 
 4. **Map** – Ecosystem Map
    - Blue pins: Hackathons
@@ -89,24 +94,51 @@ The app has 5 main tabs:
 - **Startups removed from Home page**: Previously, the Home tab had a toggle between "Hackathons" and "Startups". This has been removed.
 - **Startups now only in Hub**: All startup browsing is now centralized in the **Hub** tab
 - **Cleaner Home focus**: Home page now dedicated purely to hackathon management and participation
+- **SQLite instead of Supabase**: Data is now stored locally using SQLite for better performance and offline capability
+- **Google Gemini AI**: ChatBot now uses Google Gemini API instead of OpenAI
 
 ## Features
 
-- **Auth & RBAC**: Login/Register with placeholders for 2FA, Captcha, "Login with MyGov". Six roles: Startup, Investor, IT Company, Incubator, Admin, Super Admin.
-- **Hackathons**: Manage hackathons with locations, icons, and evaluation system. Jury members can evaluate startups based on multiple criteria.
+- **Auth & RBAC**: Login/Register with email/password. Six roles: Startup, Investor, IT Company, Incubator, Admin, Super Admin. Stored locally in SQLite.
+- **Hackathons**: Browse hackathons with locations, icons, and evaluation system. Jury members can evaluate startups.
 - **Startup Evaluations**: Comprehensive evaluation system with scores for innovation, market potential, technical quality, presentation, and business model.
 - **Awards**: Track hackathon awards and prizes for winning startups.
 - **Home**: Displays list of hackathons only. Tap a hackathon to view details → teams → tap team for members and "Join Team".
 - **Hub**: Startup/Investment Hub dedicated for browsing all startup profiles. Centralized access with role-specific messaging.
 - **Map**: Ecosystem map with pins for Hackathons (blue) and IT Hubs (green).
-- **Chat**: AI chatbot (system prompt: national innovation ecosystem assistant). Configure OpenAI via backend proxy for production.
+- **Chat**: AI chatbot powered by Google Gemini API. Responds to ecosystem-related questions.
+
+## Database
+
+- **SQLite** (`expo-sqlite`): Local data persistence for user profiles, hackathons, startups, and evaluations
+- **AsyncStorage**: Small data caching (tokens, preferences)
+- No backend server needed – app runs completely offline except for Gemini API calls
 
 ## Security
 
-- All Supabase access uses the single client in `src/lib/supabase.ts`; RLS enforces server-side RBAC.
-- Comments in `src/services/auth.service.ts` indicate where to add **audit logging** and **data encryption** for sensitive operations.
-- Do not expose the OpenAI API key in the client; use a Supabase Edge Function or your own API for the chatbot.
+- Passwords are hashed (for production, use bcrypt)
+- Comments in `src/services/auth.service.ts` indicate where to add **audit logging** and **data encryption**
+- Do not expose the Gemini API key in public repositories; use `.env` file locally
+- For production, consider adding backend authentication and token validation
 
 ## Project structure
 
 See `docs/FOLDER_STRUCTURE.md` for the recommended folder layout.
+
+## Troubleshooting
+
+### ChatBot not responding?
+- Check `.env` file has `EXPO_PUBLIC_GEMINI_API_KEY` set correctly
+- Verify API key from [Google AI Studio](https://aistudio.google.com/)
+- Check internet connection
+- Review error message in console for API quota issues
+
+### App not loading?
+- Clear cache: `npx expo start -c`
+- Delete `node_modules` and run `npm install` again
+- Check that all dependencies are installed
+
+### Data not persisting?
+- Ensure SQLite is properly configured in `app.json`
+- Check file permissions on device
+- Try uninstalling and reinstalling the app
