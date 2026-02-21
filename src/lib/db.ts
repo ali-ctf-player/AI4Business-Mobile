@@ -124,7 +124,30 @@ async function initSchema(): Promise<void> {
     // column already exists
   }
   await seedIfEmpty();
+  await seedDemoAccountsIfMissing();
   await seedItHubsIfEmpty();
+}
+
+/** Mövcud DB-də çatışmayan demo hesabları əlavə et (startup, investor, itcompany, organizer) */
+async function seedDemoAccountsIfMissing(): Promise<void> {
+  const hash = (p: string) => p;
+  const demos: Array<{ email: string; password: string; fullName: string; roleSlug: string }> = [
+    { email: "startup@ses.az", password: "startup123", fullName: "Startap İştirakçısı", roleSlug: "startup" },
+    { email: "investor@ses.az", password: "investor123", fullName: "İnvestor", roleSlug: "investor" },
+    { email: "itcompany@ses.az", password: "itcompany123", fullName: "İT Şirkət", roleSlug: "it_company" },
+    { email: "organizer@ses.az", password: "organizer123", fullName: "Təşkilatçı", roleSlug: "organizer" },
+  ];
+  for (const d of demos) {
+    const existing = await db!.getAllAsync<{ id: string }>("SELECT id FROM profiles WHERE email = ?", d.email);
+    if (existing.length > 0) continue;
+    const roleRows = await db!.getAllAsync<{ id: string }>("SELECT id FROM roles WHERE slug = ?", d.roleSlug);
+    const roleId = roleRows[0]?.id;
+    if (!roleId) continue;
+    await db!.runAsync(
+      "INSERT INTO profiles (id, role_id, email, password_hash, full_name) VALUES (?, ?, ?, ?, ?)",
+      genId(), roleId, d.email, hash(d.password), d.fullName
+    );
+  }
 }
 
 async function seedItHubsIfEmpty(): Promise<void> {

@@ -31,7 +31,24 @@ export default function HubScreen() {
     load();
   }, []);
 
-  const showHub = canSeeInvestorHub(roleSlug);
+  const hubTitle =
+    roleSlug === "startup"
+      ? "Hub – Startaplar"
+      : roleSlug === "investor"
+        ? "İnvestisiya Hub – Startaplar"
+        : roleSlug === "it_company"
+          ? "Hub – Startaplar və tərəfdaşlıq"
+          : roleSlug === "organizer"
+            ? "Hub – Startaplar və təşkilat"
+            : "Startup / Investment Hub";
+  const hubSubtitle =
+    roleSlug === "startup"
+      ? "Startapları baxın və öz startapınızı yarada bilərsiniz"
+      : roleSlug === "investor"
+        ? "Startapları qiymətləndirin və investisiya imkanlarını görün"
+        : roleSlug === "it_company"
+          ? "Startaplar və tərəfdaşlıq imkanları"
+          : "Startaplar siyahısı";
 
   if (loading) {
     return (
@@ -41,27 +58,14 @@ export default function HubScreen() {
     );
   }
 
-  if (!showHub) {
-    return (
-      <View className="flex-1 justify-center bg-slate-50 px-6 dark:bg-slate-900">
-        <Text className="text-center text-slate-600 dark:text-slate-400">
-          Startap/İnvestisiya Hub-a yalnız İnvestor, Təşkilatçı və Admin rolları daxil ola bilər.
-        </Text>
-        <Text className="mt-4 text-center text-sm text-slate-500 dark:text-slate-500">
-          Startap və İT Şirkət rolları üçün Home və Map, komandaya qatılma və startap yaratma funksiyaları aktivdir.
-        </Text>
-      </View>
-    );
-  }
-
   return (
     <View className="flex-1 bg-slate-50 dark:bg-slate-900">
       <View className="px-4 pt-2 pb-4">
         <Text className="text-lg font-semibold text-slate-900 dark:text-white">
-          Startup / Investment Hub
+          {hubTitle}
         </Text>
         <Text className="text-sm text-slate-600 dark:text-slate-400">
-          Browse startups by Startup ID
+          {hubSubtitle}
         </Text>
       </View>
       <FlatList

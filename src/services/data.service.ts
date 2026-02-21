@@ -166,8 +166,15 @@ export async function getAllRoles(): Promise<Array<{ id: string; slug: string; n
 }
 
 export async function getStartups(): Promise<Startup[]> {
+  // #region agent log
+  fetch('http://127.0.0.1:7608/ingest/dc845c4d-7102-4711-a8f1-555bb84dada4',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'b5ff6e'},body:JSON.stringify({sessionId:'b5ff6e',location:'data.service:getStartups:entry',message:'getStartups called',data:{},timestamp:Date.now(),hypothesisId:'E'})}).catch(()=>{});
+  // #endregion
   const db = await getDb();
   const rows = await db.getAllAsync<Startup>("SELECT * FROM startups ORDER BY created_at DESC");
+  // #region agent log
+  const first = rows[0];
+  fetch('http://127.0.0.1:7608/ingest/dc845c4d-7102-4711-a8f1-555bb84dada4',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'b5ff6e'},body:JSON.stringify({sessionId:'b5ff6e',location:'data.service:getStartups:afterQuery',message:'getStartups result',data:{rowCount:rows?.length,firstKeys:first?Object.keys(first):[],sampleId:first?.id},timestamp:Date.now(),hypothesisId:'E'})}).catch(()=>{});
+  // #endregion
   return rows;
 }
 

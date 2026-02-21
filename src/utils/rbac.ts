@@ -48,7 +48,7 @@ export function canManageRoles(role: RoleSlug | null | undefined): boolean {
 }
 
 export function canSeeInvestorHub(role: RoleSlug | null | undefined): boolean {
-  return hasRole(role, ["investor", "admin", "super_admin", "organizer"]);
+  return true; /* bütün rollar Hub-a daxil ola bilər; məzmun rol üzrə fərqlənir */
 }
 
 export function canCreateStartup(role: RoleSlug | null | undefined): boolean {

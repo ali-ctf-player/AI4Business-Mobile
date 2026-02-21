@@ -39,9 +39,10 @@ function toUserFriendlyError(error: unknown): Error {
 export async function signIn({ email, password }: SignInInput) {
   try {
     const db = await getDb();
+    const normalizedEmail = email.trim().toLowerCase();
     const rows = await db.getAllAsync<{ id: string; role_id: string; password_hash: string }>(
-      "SELECT id, role_id, password_hash FROM profiles WHERE email = ?",
-      email.trim()
+      "SELECT id, role_id, password_hash FROM profiles WHERE LOWER(TRIM(email)) = ?",
+      normalizedEmail
     );
     const profile = rows[0];
     if (!profile) throw new Error("Email və ya parol yanlışdır.");
